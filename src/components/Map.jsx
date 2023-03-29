@@ -1,9 +1,15 @@
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, MarkerF, useJsApiLoader, InfoWindow } from "@react-google-maps/api";
 import { useState, useCallback, useEffect } from "react";
+import useWebSocket from "react-use-websocket";
 import { useFetch } from "../hooks";
 
 const center = { lat: 7.113237646328663, lng: -73.10617916332973 };
-let stops = [];
+
+const WS_URL = "wss://bus.unab.edu.co/buses/location/";
+
+let latitude = 7.113237646328663,
+  longitude = -73.10617916332973,
+  stops = [];
 
 export const Map = () => {
   const { isLoaded } = useJsApiLoader({
@@ -17,7 +23,8 @@ export const Map = () => {
     setMap(null);
   }, []);
 
-  const { data } = useFetch("https://bus.unab.edu.co/django/api/routes/");
+  // fetch stops
+  const { data, isLoading } = useFetch("https://bus.unab.edu.co/django/api/routes/");
 
   useEffect(() => {
     if (data) {
@@ -26,26 +33,81 @@ export const Map = () => {
     }
   }, [data]);
 
+  // InfoWIndow selected stop
+  const [selectedStop, setSelectedStop] = useState(null);
+
+  // WS bus location
+  const { lastJsonMessage } = useWebSocket(WS_URL, {
+    onOpen: () => {
+      // console.log("WebSocket connection established.");
+    },
+    shouldReconnect: () => false,
+  });
+  if (lastJsonMessage) {
+    const { message } = lastJsonMessage;
+    latitude = parseFloat(message.latitude);
+    longitude = parseFloat(message.longitude);
+    console.log({ latitude, longitude });
+  }
+
   return (
     <>
-      {isLoaded ? (
+      {!isLoading ? (
         <GoogleMap
           mapContainerStyle={{ width: "100%", height: "90vh" }}
           zoom={15.5}
           center={center}
+          mapTypeId="roadmap"
+          options={{
+            fullscreenControl: false,
+            disableDoubleClickZoom: true,
+            streetViewControl: false,
+            zoomControl: false,
+            scrollwheel: true,
+          }}
           onUnmount={onUnmount}
         >
-          {stops.map((stop) => (
-            <Marker
-              key={stop.name}
-              position={{ lat: stop.latitude, lng: stop.longitude }}
+          <>
+            {/* Load markers stops */}
+            {stops.map((stop) => (
+              <MarkerF
+                key={stop.name}
+                position={{ lat: stop.latitude, lng: stop.longitude }}
+                icon={{
+                  url: "../../static/img/location-pin.png",
+                  anchor: new google.maps.Point(17, 46),
+                  scaledSize: new google.maps.Size(37, 37),
+                }}
+                zIndex={10}
+                title={stop.name}
+                onClick={() => {
+                  setSelectedStop(stop);
+                }}
+              ></MarkerF>
+            ))}
+            {selectedStop && (
+              <InfoWindow
+                onCloseClick={() => setSelectedStop(null)}
+                position={{
+                  lat: selectedStop.latitude,
+                  lng: selectedStop.longitude,
+                }}
+                options={{ pixelOffset: new window.google.maps.Size(0, -40) }}
+              >
+                <span>Estación {selectedStop.name}</span>
+              </InfoWindow>
+            )}
+            {/* Bus marker */}
+            <MarkerF
+              position={{ lat: latitude, lng: longitude }}
               icon={{
-                url: "../../static/img/location-pin.png",
+                url: "https://i.imgur.com/sHcBdD8.png",
                 anchor: new google.maps.Point(17, 46),
                 scaledSize: new google.maps.Size(37, 37),
               }}
-            ></Marker>
-          ))}
+              zIndex={12}
+            ></MarkerF>
+          </>
         </GoogleMap>
       ) : (
         <div className="position-absolute top-50 start-50 translate-middle">
