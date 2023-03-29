@@ -1,14 +1,16 @@
-import { GoogleMap, MarkerF, useJsApiLoader, InfoWindow } from "@react-google-maps/api";
 import { useState, useCallback, useEffect } from "react";
+
+import { GoogleMap, Marker, useJsApiLoader, InfoWindow } from "@react-google-maps/api";
 import useWebSocket from "react-use-websocket";
+
 import { useFetch } from "../hooks";
 
 const center = { lat: 7.113237646328663, lng: -73.10617916332973 };
 
 const WS_URL = "wss://bus.unab.edu.co/buses/location/";
 
-let latitude = 7.113237646328663,
-  longitude = -73.10617916332973,
+let latitude,
+  longitude,
   stops = [];
 
 export const Map = () => {
@@ -23,7 +25,7 @@ export const Map = () => {
     setMap(null);
   }, []);
 
-  // fetch stops
+  //* fetch stops
   const { data, isLoading } = useFetch("https://bus.unab.edu.co/django/api/routes/");
 
   useEffect(() => {
@@ -33,10 +35,10 @@ export const Map = () => {
     }
   }, [data]);
 
-  // InfoWIndow selected stop
+  //* InfoWIndow selected stop
   const [selectedStop, setSelectedStop] = useState(null);
 
-  // WS bus location
+  //* WS bus location
   const { lastJsonMessage } = useWebSocket(WS_URL, {
     onOpen: () => {
       // console.log("WebSocket connection established.");
@@ -52,7 +54,7 @@ export const Map = () => {
 
   return (
     <>
-      {!isLoading ? (
+      {isLoaded ? (
         <GoogleMap
           mapContainerStyle={{ width: "100%", height: "90vh" }}
           zoom={15.5}
@@ -69,22 +71,24 @@ export const Map = () => {
         >
           <>
             {/* Load markers stops */}
-            {stops.map((stop) => (
-              <MarkerF
-                key={stop.name}
-                position={{ lat: stop.latitude, lng: stop.longitude }}
-                icon={{
-                  url: "../../static/img/location-pin.png",
-                  anchor: new google.maps.Point(17, 46),
-                  scaledSize: new google.maps.Size(37, 37),
-                }}
-                zIndex={10}
-                title={stop.name}
-                onClick={() => {
-                  setSelectedStop(stop);
-                }}
-              ></MarkerF>
-            ))}
+            {!isLoading &&
+              stops.map((stop) => (
+                <Marker
+                  key={stop.name}
+                  position={{ lat: stop.latitude, lng: stop.longitude }}
+                  icon={{
+                    url: "../../static/img/location-pin.png",
+                    anchor: new google.maps.Point(17, 46),
+                    scaledSize: new google.maps.Size(37, 37),
+                  }}
+                  zIndex={10}
+                  title={stop.name}
+                  animation={2}
+                  onClick={() => {
+                    setSelectedStop(stop);
+                  }}
+                ></Marker>
+              ))}
             {selectedStop && (
               <InfoWindow
                 onCloseClick={() => setSelectedStop(null)}
@@ -98,15 +102,18 @@ export const Map = () => {
               </InfoWindow>
             )}
             {/* Bus marker */}
-            <MarkerF
-              position={{ lat: latitude, lng: longitude }}
-              icon={{
-                url: "https://i.imgur.com/sHcBdD8.png",
-                anchor: new google.maps.Point(17, 46),
-                scaledSize: new google.maps.Size(37, 37),
-              }}
-              zIndex={12}
-            ></MarkerF>
+            {latitude && (
+              <Marker
+                position={{ lat: latitude, lng: longitude }}
+                icon={{
+                  url: "https://i.imgur.com/sHcBdD8.png",
+                  anchor: new google.maps.Point(17, 46),
+                  scaledSize: new google.maps.Size(37, 37),
+                }}
+                animation={2}
+                zIndex={12}
+              ></Marker>
+            )}
           </>
         </GoogleMap>
       ) : (
