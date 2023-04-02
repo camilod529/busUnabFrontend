@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 
-import { GoogleMap, Marker, useJsApiLoader, InfoWindow } from "@react-google-maps/api";
+import { GoogleMap, MarkerF, useJsApiLoader, InfoWindow } from "@react-google-maps/api";
 import useWebSocket from "react-use-websocket";
 
 import { useFetch } from "../hooks";
@@ -30,8 +30,8 @@ export const Map = () => {
 
   useEffect(() => {
     if (data) {
+      console.log(data);
       stops = data.stops;
-      console.log(stops);
     }
   }, [data]);
 
@@ -70,10 +70,10 @@ export const Map = () => {
           onUnmount={onUnmount}
         >
           <>
-            {/* Load markers stops */}
+            {/* Load markerFs stops */}
             {!isLoading &&
               stops.map((stop) => (
-                <Marker
+                <MarkerF
                   key={stop.name}
                   position={{ lat: stop.latitude, lng: stop.longitude }}
                   icon={{
@@ -87,7 +87,7 @@ export const Map = () => {
                   onClick={() => {
                     setSelectedStop(stop);
                   }}
-                ></Marker>
+                ></MarkerF>
               ))}
             {selectedStop && (
               <InfoWindow
@@ -101,9 +101,9 @@ export const Map = () => {
                 <span>Estación {selectedStop.name}</span>
               </InfoWindow>
             )}
-            {/* Bus marker */}
+            {/* Bus markerF */}
             {latitude && (
-              <Marker
+              <MarkerF
                 position={{ lat: latitude, lng: longitude }}
                 icon={{
                   url: "https://i.imgur.com/sHcBdD8.png",
@@ -112,7 +112,7 @@ export const Map = () => {
                 }}
                 animation={2}
                 zIndex={12}
-              ></Marker>
+              ></MarkerF>
             )}
           </>
         </GoogleMap>
