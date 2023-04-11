@@ -1,4 +1,4 @@
-import { Map, Navbar } from "./components";
+import { Map, Navbar } from "../components";
 
 export const HomePage = () => {
   return (
