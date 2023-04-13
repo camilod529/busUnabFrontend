@@ -5,8 +5,9 @@ import useWebSocket from "react-use-websocket";
 
 import { useFetch } from "../hooks";
 
-const center = { lat: 7.113237646328663, lng: -73.10617916332973 };
+import mapStyles from "../../static/JSON/mapStyles.js";
 
+const center = { lat: 7.113237646328663, lng: -73.10617916332973 };
 const WS_URL = "wss://bus.unab.edu.co/buses/location/";
 
 let latitude,
@@ -66,6 +67,7 @@ export const Map = () => {
             streetViewControl: false,
             zoomControl: false,
             scrollwheel: true,
+            styles: mapStyles,
           }}
           onUnmount={onUnmount}
         >
