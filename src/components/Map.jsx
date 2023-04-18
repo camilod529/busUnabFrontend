@@ -5,6 +5,8 @@ import useWebSocket from "react-use-websocket";
 
 import { useFetch } from "../hooks";
 
+import { Spinner } from "./";
+
 import mapStyles from "../../static/JSON/mapStyles.js";
 
 const center = { lat: 7.113237646328663, lng: -73.10617916332973 };
@@ -119,11 +121,7 @@ export const Map = () => {
           </>
         </GoogleMap>
       ) : (
-        <div className="position-absolute top-50 start-50 translate-middle">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
+        <Spinner />
       )}
     </>
   );
