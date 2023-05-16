@@ -76,7 +76,7 @@ export const Map = () => {
           <>
             {/* Load markerFs stops */}
             {!isLoading &&
-              stops.map((stop) => (
+              stops?.map((stop) => (
                 <MarkerF
                   key={stop.name}
                   position={{ lat: stop.latitude, lng: stop.longitude }}

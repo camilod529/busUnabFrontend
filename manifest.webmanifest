@@ -1,0 +1,15 @@
+{
+  "background_color": "white",
+  "description": "Aplicacion desarrollada para bus UNAB",
+  "display": "fullscreen",
+  "icons": [
+    {
+      "src": "https://i.imgur.com/sHcBdD8.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "name": "Bus UNAB",
+  "short_name": "BusUNAB",
+  "start_url": "https://bus.unab.edu.co"
+}
