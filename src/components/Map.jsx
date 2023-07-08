@@ -81,9 +81,9 @@ export const Map = () => {
                   key={stop.name}
                   position={{ lat: stop.latitude, lng: stop.longitude }}
                   icon={{
-                    url: "../../static/img/location-pin.png",
+                    url: "../../static/pngs-iconos/parada-mapa.png",
                     anchor: new google.maps.Point(17, 46),
-                    scaledSize: new google.maps.Size(37, 37),
+                    scaledSize: new google.maps.Size(34, 37),
                   }}
                   zIndex={10}
                   title={stop.name}
@@ -110,9 +110,9 @@ export const Map = () => {
               <MarkerF
                 position={{ lat: latitude, lng: longitude }}
                 icon={{
-                  url: "https://i.imgur.com/sHcBdD8.png",
+                  url: "../../static/pngs-iconos/bus-mapa.png",
                   anchor: new google.maps.Point(17, 46),
-                  scaledSize: new google.maps.Size(37, 37),
+                  scaledSize: new google.maps.Size(47, 58),
                 }}
                 animation={2}
                 zIndex={12}
