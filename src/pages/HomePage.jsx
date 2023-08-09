@@ -2,7 +2,7 @@ import { redirect } from "react-router-dom";
 import { Map, Navbar } from "../components";
 import { NoServicePage } from "./NoServicePage";
 
-let date = new Date("Aug 09 2023");
+let date = new Date();
 let day = date.getDay();
 console.log(date);
 
