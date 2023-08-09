@@ -5,7 +5,7 @@ import "../css/navbar.css";
 export const Navbar = () => {
   const { data, isLoading, hasError } = useFetch("https://bus.unab.edu.co/django/api/routes/");
   if (!isLoading) {
-    console.log(typeof data);
+    // console.log(typeof data);
   }
   return (
     <>

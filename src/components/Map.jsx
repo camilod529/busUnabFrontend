@@ -33,7 +33,7 @@ export const Map = () => {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
+      // console.log(data);
       stops = data.stops;
     }
   }, [data]);
