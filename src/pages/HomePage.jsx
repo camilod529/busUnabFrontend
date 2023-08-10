@@ -1,6 +1,7 @@
 import { redirect } from "react-router-dom";
 import { Map, Navbar } from "../components";
 import { NoServicePage } from "./NoServicePage";
+import { Message } from "../components/Message";
 
 let date = new Date();
 let day = date.getDay();
@@ -13,6 +14,7 @@ export const HomePage = () => {
         <NoServicePage />
       ) : (
         <>
+          <Message />
           <Navbar />
           <Map />
         </>

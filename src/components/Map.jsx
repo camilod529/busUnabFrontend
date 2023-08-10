@@ -10,7 +10,8 @@ import { Spinner } from "./";
 import mapStyles from "../../static/JSON/mapStyles.js";
 
 const center = { lat: 7.113237646328663, lng: -73.10617916332973 };
-const WS_URL = "wss://bus.unab.edu.co/buses/location/";
+// const WS_URL = "wss://bus.unab.edu.co/buses/location/";
+const WS_URL = "ws://localhost:8000/buses/location/"; //test localhost port 8000
 
 let latitude,
   longitude,
@@ -29,11 +30,12 @@ export const Map = () => {
   }, []);
 
   //* fetch stops
-  const { data, isLoading } = useFetch("https://bus.unab.edu.co/django/api/routes/");
+  // const { data, isLoading } = useFetch("https://bus.unab.edu.co/django/api/routes/");
+  const { data, isLoading } = useFetch("http://localhost:8000/api/routes/1"); // test localhost port 8000, cambiar el numero de ruta por la ruta seleccionada
 
   useEffect(() => {
     if (data) {
-      // console.log(data);
+      console.log(data);
       stops = data.stops;
     }
   }, [data]);
