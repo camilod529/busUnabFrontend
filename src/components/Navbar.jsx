@@ -9,7 +9,7 @@ export const Navbar = () => {
   }
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light vh-10 header">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light header">
         <div className="container-fluid">
           <span className="navbar-brand font-weight-bold">
             <img src="../../static/img/logo-busu.png" alt="UNAB logo" style={{ height: "2em" }} />

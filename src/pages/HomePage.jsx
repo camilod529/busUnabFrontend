@@ -5,7 +5,7 @@ import { Message } from "../components/Message";
 
 let date = new Date();
 let day = date.getDay();
-console.log(date);
+// console.log(date);
 
 export const HomePage = () => {
   return (
@@ -14,8 +14,8 @@ export const HomePage = () => {
         <NoServicePage />
       ) : (
         <>
-          <Message />
           <Navbar />
+          <Message />
           <Map />
         </>
       )}
