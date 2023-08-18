@@ -104,8 +104,8 @@ export const Map = () => {
   const markerRef = useRef(null);
 
   //* fetch stops
-  // const { data, isLoading } = useFetch("https://bus.unab.edu.co/django/api/routes/");
-  const { data, isLoading } = useFetch("http://localhost:8000/api/routes/1"); // test localhost port 8000, cambiar el numero de ruta por la ruta seleccionada
+  const { data, isLoading } = useFetch("https://bus.unab.edu.co/django/api/routes/");
+  // const { data, isLoading } = useFetch("http://localhost:8000/api/routes/1"); // test localhost port 8000, cambiar el numero de ruta por la ruta seleccionada
 
   useEffect(() => {
     if (data) {
@@ -138,7 +138,10 @@ export const Map = () => {
     <>
       {isLoaded ? (
         <GoogleMap
-          mapContainerStyle={{ width: "100%", height: "92.5vh" }}
+          mapContainerStyle={{
+            width: "100%",
+            height: "92.5vh",
+          }}
           zoom={15.5}
           center={center}
           mapTypeId="roadmap"
