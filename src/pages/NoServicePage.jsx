@@ -11,9 +11,10 @@ export const NoServicePage = () => {
             style={{ height: "15rem", width: "auto" }}
           />
           <p className="fs-5 mt-4">
-            <b>El servicio de Bus UNAB no est&aacute; disponible los fines de semana.</b>
-            <br />
-            Lamentamos el inconveniente.
+            <b>
+              ¡Importante! Ten en cuenta que los fines de semana no se presta el servicio de ruta
+              del Bus UNAB.
+            </b>
           </p>
         </div>
       </div>
