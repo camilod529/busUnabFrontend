@@ -164,7 +164,7 @@ export const Map = () => {
                   key={stop.name}
                   position={{ lat: stop.latitude, lng: stop.longitude }}
                   icon={{
-                    url: "../../static/pngs-iconos/parada-mapa.png",
+                    url: "https://i.imgur.com/iKdUgPY.png",
                     anchor: new google.maps.Point(17, 46),
                     scaledSize: new google.maps.Size(34, 37),
                   }}
@@ -185,7 +185,9 @@ export const Map = () => {
                 }}
                 options={{ pixelOffset: new window.google.maps.Size(0, -40) }}
               >
-                <span>Estación {selectedStop.name}</span>
+                <div>
+                  <span>Estación {selectedStop.name}</span>
+                </div>
               </InfoWindow>
             )}
             {/* Bus markerF */}
@@ -193,7 +195,7 @@ export const Map = () => {
               <Marker
                 position={{ lat: latitude, lng: longitude }}
                 icon={{
-                  url: "../../static/pngs-iconos/bus-mapa.png",
+                  url: "https://i.imgur.com/L7tELuf.png",
                   anchor: new google.maps.Point(17, 46),
                   scaledSize: new google.maps.Size(47, 58),
                 }}

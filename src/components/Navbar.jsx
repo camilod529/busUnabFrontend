@@ -12,7 +12,7 @@ export const Navbar = () => {
       <nav className="navbar navbar-expand-lg navbar-light bg-light header">
         <div className="container-fluid">
           <span className="navbar-brand font-weight-bold">
-            <img src="../../static/img/logo-busu.png" alt="UNAB logo" style={{ height: "2em" }} />
+            <img src="https://i.imgur.com/3hyS0Dp.png" alt="UNAB logo" style={{ height: "2em" }} />
           </span>
           <button
             className="navbar-toggler"

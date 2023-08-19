@@ -1,5 +1,3 @@
-//TODO: colores
-
 // const test = [
 //   { id: 1, tittle: "titulo de prueba", message: "Mensaje de prueba" },
 //   {
@@ -53,7 +51,7 @@ export const Message = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    if (!isLoading) setMessages(data);
+    if (!isLoading && data) setMessages(data);
   }, [data]);
 
   // console.log(messages);
@@ -75,7 +73,7 @@ export const Message = () => {
                 <div
                   key={message.id}
                   className="row justify-content-between"
-                  style={styles[index % 4]}
+                  style={styles[index % styles.length]}
                 >
                   <div className="col-10">
                     <div className="mt-3">
