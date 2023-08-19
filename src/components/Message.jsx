@@ -43,8 +43,8 @@ import { useFetch } from "../hooks";
 import "../css/message.css";
 
 export const Message = () => {
-  // const { data, isLoading } = useFetch("https://bus.unab.edu.co/control/api/messages/");
-  const { data, isLoading } = useFetch("http://localhost:8000/api/messages/");
+  const { data, isLoading } = useFetch("https://bus.unab.edu.co/control/api/messages/");
+  // const { data, isLoading } = useFetch("http://localhost:8000/api/messages/");
   // const [data, isLoading] = [test, false];
 
   //

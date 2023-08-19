@@ -3,10 +3,10 @@ import { useFetch } from "../hooks";
 import "../css/navbar.css";
 
 export const Navbar = () => {
-  const { data, isLoading, hasError } = useFetch("https://bus.unab.edu.co/django/api/routes/");
-  if (!isLoading) {
-    // console.log(typeof data);
-  }
+  // const { data, isLoading, hasError } = useFetch("https://bus.unab.edu.co/django/api/routes/");
+  // if (!isLoading) {
+  //   // console.log(typeof data);
+  // }
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light header">

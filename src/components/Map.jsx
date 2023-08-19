@@ -11,7 +11,7 @@ import mapStyles from "../../static/JSON/mapStyles.js";
 
 const center = { lat: 7.113237646328663, lng: -73.10617916332973 };
 const WS_URL = "wss://bus.unab.edu.co/buses/location/";
-// const WS_URL = "wss://bus.unab.edu.co/control/buses/location/";
+// const WS_URL = "wss://bus.unab.edu.co/buses/location/";
 // const WS_URL = "ws://localhost:8000/buses/location/"; //test localhost port 8000
 
 let latitude,
@@ -104,13 +104,14 @@ export const Map = () => {
   const markerRef = useRef(null);
 
   //* fetch stops
-  const { data, isLoading } = useFetch("https://bus.unab.edu.co/django/api/routes/");
+  setTimeout(() => {}, 2000);
+  const { data, isLoading } = useFetch("https://bus.unab.edu.co/control/api/routes/1");
   // const { data, isLoading } = useFetch("http://localhost:8000/api/routes/1"); // test localhost port 8000, cambiar el numero de ruta por la ruta seleccionada
 
   useEffect(() => {
     if (data) {
-      // console.log(data);
       stops = data.stops;
+      // console.log(stops);
     }
   }, [data]);
 
@@ -128,7 +129,7 @@ export const Map = () => {
     const { message } = lastJsonMessage;
     latitude = parseFloat(message.latitude);
     longitude = parseFloat(message.longitude);
-    // console.log({ latitude, longitude });
+    console.log({ latitude, longitude });
     markerRef.current !== null
       ? animateMarkerTo(markerRef.current.marker, { lat: latitude, lng: longitude })
       : null;
@@ -159,23 +160,26 @@ export const Map = () => {
           <>
             {/* Load markerFs stops */}
             {!isLoading &&
-              stops?.map((stop) => (
-                <MarkerF
-                  key={stop.name}
-                  position={{ lat: stop.latitude, lng: stop.longitude }}
-                  icon={{
-                    url: "https://i.imgur.com/iKdUgPY.png",
-                    anchor: new google.maps.Point(17, 46),
-                    scaledSize: new google.maps.Size(34, 37),
-                  }}
-                  zIndex={10}
-                  title={stop.name}
-                  animation={2}
-                  onClick={() => {
-                    setSelectedStop(stop);
-                  }}
-                ></MarkerF>
-              ))}
+              stops?.map((stop) => {
+                // console.log(stop);
+                return (
+                  <MarkerF
+                    key={stop.name}
+                    position={{ lat: stop.latitude, lng: stop.longitude }}
+                    icon={{
+                      url: "../../static/img/parada-mapa.png",
+                      anchor: new google.maps.Point(17, 46),
+                      scaledSize: new google.maps.Size(34, 37),
+                    }}
+                    zIndex={10}
+                    title={stop.name}
+                    animation={2}
+                    onClick={() => {
+                      setSelectedStop(stop);
+                    }}
+                  ></MarkerF>
+                );
+              })}
             {selectedStop && (
               <InfoWindow
                 onCloseClick={() => setSelectedStop(null)}
