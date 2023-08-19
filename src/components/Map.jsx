@@ -167,7 +167,7 @@ export const Map = () => {
                     key={stop.name}
                     position={{ lat: stop.latitude, lng: stop.longitude }}
                     icon={{
-                      url: "../../static/img/parada-mapa.png",
+                      url: "https://bus.unab.edu.co/static/src/parada-mapa.png",
                       anchor: new google.maps.Point(17, 46),
                       scaledSize: new google.maps.Size(34, 37),
                     }}
@@ -199,7 +199,7 @@ export const Map = () => {
               <Marker
                 position={{ lat: latitude, lng: longitude }}
                 icon={{
-                  url: "https://i.imgur.com/L7tELuf.png",
+                  url: "https://bus.unab.edu.co/static/src/bus-mapa.png",
                   anchor: new google.maps.Point(17, 46),
                   scaledSize: new google.maps.Size(47, 58),
                 }}

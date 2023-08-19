@@ -12,9 +12,13 @@ export const Navbar = () => {
       <nav className="navbar navbar-expand-lg navbar-light bg-light header">
         <div className="container-fluid">
           <span className="navbar-brand font-weight-bold">
-            <img src="https://i.imgur.com/3hyS0Dp.png" alt="UNAB logo" style={{ height: "2em" }} />
+            <img
+              src="https://bus.unab.edu.co/static/src/logo-busu.png"
+              alt="UNAB logo"
+              style={{ height: "2em" }}
+            />
           </span>
-          <button
+          {/* <button
             className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
@@ -24,8 +28,8 @@ export const Navbar = () => {
             aria-label="Toggle navigation"
           >
             <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
+          </button> */}
+          {/* <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item dropdown">
                 <a
@@ -47,7 +51,7 @@ export const Navbar = () => {
                 </ul>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </nav>
     </>
