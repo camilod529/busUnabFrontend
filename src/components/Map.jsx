@@ -129,7 +129,7 @@ export const Map = () => {
     const { message } = lastJsonMessage;
     latitude = parseFloat(message.latitude);
     longitude = parseFloat(message.longitude);
-    console.log({ latitude, longitude });
+    // console.log({ latitude, longitude });
     markerRef.current !== null
       ? animateMarkerTo(markerRef.current.marker, { lat: latitude, lng: longitude })
       : null;
@@ -141,7 +141,7 @@ export const Map = () => {
         <GoogleMap
           mapContainerStyle={{
             width: "100%",
-            height: "92.5vh",
+            height: "90vh",
           }}
           zoom={15.5}
           center={center}
