@@ -141,9 +141,9 @@ export const Map = () => {
         <GoogleMap
           mapContainerStyle={{
             width: "100%",
-            height: "90vh",
+            height: "calc(100vh - 69px)",
           }}
-          zoom={15.5}
+          zoom={16}
           center={center}
           mapTypeId="roadmap"
           options={{
