@@ -65,7 +65,7 @@ export const Message = () => {
     // console.log(messages);
     return (
       <>
-        <div className="container-fluid" style={{}}>
+        <div className="container-fluid position-absolute top-0 start-0 h-5" style={{ zIndex: 10 }}>
           <div>
             {messages.map((message, index) => {
               // console.log(message);

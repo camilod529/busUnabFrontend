@@ -1,4 +1,3 @@
-import { redirect } from "react-router-dom";
 import { Map, Navbar } from "../components";
 import { NoServicePage } from "./NoServicePage";
 import { Message } from "../components/Message";
@@ -15,8 +14,10 @@ export const HomePage = () => {
       ) : (
         <>
           <Navbar />
-          <Message />
-          <Map />
+          <div className="d-flex position-relative">
+            <Message />
+            <Map />
+          </div>
         </>
       )}
     </>

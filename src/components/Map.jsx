@@ -105,13 +105,16 @@ export const Map = () => {
 
   //* fetch stops
   setTimeout(() => {}, 2000);
-  const { data, isLoading } = useFetch("https://bus.unab.edu.co/control/api/routes/1");
-  // const { data, isLoading } = useFetch("http://localhost:8000/api/routes/1"); // test localhost port 8000, cambiar el numero de ruta por la ruta seleccionada
+  const { data, isLoading } = useFetch("https://bus.unab.edu.co/control/api/routes/1/");
+  // const { data, isLoading } = useFetch("http://localhost:8000/api/routes/1/"); // test localhost port 8000, cambiar el numero de ruta por la ruta seleccionada
 
   useEffect(() => {
     if (data) {
       stops = data.stops;
-      // console.log(stops);
+      latitude = data.buses[0].latitude;
+      longitude = data.buses[0].longitude;
+      // console.log(data)
+      // console.log({ latitude, longitude });
     }
   }, [data]);
 
@@ -142,6 +145,7 @@ export const Map = () => {
           mapContainerStyle={{
             width: "100%",
             height: "calc(100vh - 69px)",
+            zIndex: 9,
           }}
           zoom={16}
           center={center}
@@ -154,6 +158,7 @@ export const Map = () => {
             scrollwheel: true,
             styles: mapStyles,
             disableDefaultUI: true,
+            gestureHandling: "greedy",
           }}
           onUnmount={onUnmount}
         >
