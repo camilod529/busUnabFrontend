@@ -4,7 +4,7 @@
   "display": "fullscreen",
   "icons": [
     {
-      "src": "./static/pngs-iconos/favicon-app.png",
+      "src": "https://bus.unab.edu.co/static/src/favicon-app.png",
       "sizes": "145x145",
       "type": "image/png"
     }
