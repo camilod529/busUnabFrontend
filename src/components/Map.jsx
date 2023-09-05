@@ -92,7 +92,7 @@ function animateMarkerTo(marker, newPosition) {
 
 export const Map = () => {
   const route = useSelector((state) => state.route.route);
-  console.log(route);
+  // console.log(route);
   const { isLoaded } = useJsApiLoader({
     if: "google-map-script",
     googleMapsApiKey: "AIzaSyAalziNd960DQofNIoW54K8z608vBZd_Ic",
@@ -107,8 +107,10 @@ export const Map = () => {
   const markerRef = useRef(null);
 
   //* fetch stops
-  setTimeout(() => {}, 2000);
-  const { data, isLoading } = useFetch(`https://bus.unab.edu.co/control/api/routes/${route}/`);
+  const { data, isLoading } = useFetch(
+    `https://bus.unab.edu.co/control/api/routes/${route}/`,
+    true
+  );
   // const { data, isLoading } = useFetch("http://localhost:8000/api/routes/1/"); // test localhost port 8000, cambiar el numero de ruta por la ruta seleccionada
 
   useEffect(() => {
