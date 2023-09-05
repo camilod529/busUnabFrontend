@@ -1,12 +1,13 @@
-import { useFetch } from "../hooks";
+import { useDispatch } from "react-redux";
+import { changeRoute } from "../store/route/routeSlice";
 
 import "../css/navbar.css";
 
+useDispatch;
+
 export const Navbar = () => {
-  // const { data, isLoading, hasError } = useFetch("https://bus.unab.edu.co/django/api/routes/");
-  // if (!isLoading) {
-  //   // console.log(typeof data);
-  // }
+  const dispatch = useDispatch();
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light header">
@@ -18,7 +19,7 @@ export const Navbar = () => {
               style={{ height: "2em" }}
             />
           </span>
-          {/* <button
+          <button
             className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
@@ -28,8 +29,8 @@ export const Navbar = () => {
             aria-label="Toggle navigation"
           >
             <span className="navbar-toggler-icon"></span>
-          </button> */}
-          {/* <div className="collapse navbar-collapse" id="navbarNav">
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item dropdown">
                 <a
@@ -43,15 +44,19 @@ export const Navbar = () => {
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <li>
-                    <a className="dropdown-item">Ruta 1</a>
+                    <div className="dropdown-item" onClick={() => dispatch(changeRoute(1))}>
+                      Ruta 1
+                    </div>
                   </li>
                   <li>
-                    <a className="dropdown-item">Ruta 2</a>
+                    <div className="dropdown-item" onClick={() => dispatch(changeRoute(2))}>
+                      Ruta 2
+                    </div>
                   </li>
                 </ul>
               </li>
             </ul>
-          </div> */}
+          </div>
         </div>
       </nav>
     </>

@@ -8,6 +8,7 @@ import { useFetch } from "../hooks";
 import { Spinner } from "./";
 
 import mapStyles from "../../static/JSON/mapStyles.js";
+import { useSelector } from "react-redux";
 
 const center = { lat: 7.113237646328663, lng: -73.10617916332973 };
 const WS_URL = "wss://bus.unab.edu.co/buses/location/";
@@ -90,6 +91,8 @@ function animateMarkerTo(marker, newPosition) {
 }
 
 export const Map = () => {
+  const route = useSelector((state) => state.route.route);
+  console.log(route);
   const { isLoaded } = useJsApiLoader({
     if: "google-map-script",
     googleMapsApiKey: "AIzaSyAalziNd960DQofNIoW54K8z608vBZd_Ic",
@@ -105,7 +108,7 @@ export const Map = () => {
 
   //* fetch stops
   setTimeout(() => {}, 2000);
-  const { data, isLoading } = useFetch("https://bus.unab.edu.co/control/api/routes/1/");
+  const { data, isLoading } = useFetch(`https://bus.unab.edu.co/control/api/routes/${route}/`);
   // const { data, isLoading } = useFetch("http://localhost:8000/api/routes/1/"); // test localhost port 8000, cambiar el numero de ruta por la ruta seleccionada
 
   useEffect(() => {
