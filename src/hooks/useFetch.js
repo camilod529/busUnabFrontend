@@ -13,7 +13,7 @@ export const useFetch = (url, wait = false) => {
       isLoading: true,
     });
     if (wait) {
-      console.log(wait);
+      // console.log(wait);
       await new Promise((r) => setTimeout(r, 2000));
     }
 
