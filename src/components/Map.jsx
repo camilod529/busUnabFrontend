@@ -10,7 +10,8 @@ import { Spinner } from "./";
 import mapStyles from "../../static/JSON/mapStyles.js";
 import { useSelector } from "react-redux";
 
-const center = { lat: 7.113237646328663, lng: -73.10617916332973 };
+// const center = { lat: 7.113237646328663, lng: -73.10617916332973 };
+const center = { lat: 7.1148017392066905, lng: -73.10797265816113 }; // centro para nuevas rutas
 const WS_URL = "wss://bus.unab.edu.co/buses/location/";
 // const WS_URL = "wss://bus.unab.edu.co/buses/location/";
 // const WS_URL = "ws://localhost:8000/buses/location/"; //test localhost port 8000
@@ -116,9 +117,9 @@ export const Map = () => {
   useEffect(() => {
     if (data) {
       stops = data.stops;
-      latitude = data.buses[0].latitude;
-      longitude = data.buses[0].longitude;
-      // console.log(data)
+      latitude = data.buses[route - 1].latitude;
+      longitude = data.buses[route - 1].longitude;
+      // console.log(data);
       // console.log({ latitude, longitude });
     }
   }, [data]);
