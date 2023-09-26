@@ -94,7 +94,6 @@ function animateMarkerTo(marker, newPosition) {
 export const Map = () => {
   const route = useSelector((state) => state.route.route);
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
 
   console.log(route);
   const { isLoaded } = useJsApiLoader({
@@ -126,7 +125,7 @@ export const Map = () => {
         setLoading(false);
         // console.log({ latitude, longitude });
       });
-  }, [, data, route]);
+  }, [, route]);
 
   //* InfoWIndow selected stop
   const [selectedStop, setSelectedStop] = useState(null);
