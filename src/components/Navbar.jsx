@@ -3,8 +3,6 @@ import { changeRoute } from "../store/route/routeSlice";
 
 import "../css/navbar.css";
 
-useDispatch;
-
 export const Navbar = () => {
   const dispatch = useDispatch();
 
@@ -44,12 +42,24 @@ export const Navbar = () => {
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <li>
-                    <div className="dropdown-item" onClick={() => dispatch(changeRoute(1))}>
+                    <div
+                      className="dropdown-item"
+                      onClick={() => {
+                        dispatch(changeRoute(1));
+                        localStorage.setItem("route", 1);
+                      }}
+                    >
                       Ruta 1
                     </div>
                   </li>
                   <li>
-                    <div className="dropdown-item" onClick={() => dispatch(changeRoute(2))}>
+                    <div
+                      className="dropdown-item"
+                      onClick={() => {
+                        dispatch(changeRoute(2));
+                        localStorage.setItem("route", 2);
+                      }}
+                    >
                       Ruta 2
                     </div>
                   </li>

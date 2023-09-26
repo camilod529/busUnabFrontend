@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const routeSlice = createSlice({
   name: "route",
   initialState: {
-    route: 1,
+    route: localStorage.getItem("route") || 1,
   },
   reducers: {
     changeRoute: (state, action) => {

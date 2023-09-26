@@ -93,7 +93,10 @@ function animateMarkerTo(marker, newPosition) {
 
 export const Map = () => {
   const route = useSelector((state) => state.route.route);
-  // console.log(route);
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+
+  console.log(route);
   const { isLoaded } = useJsApiLoader({
     if: "google-map-script",
     googleMapsApiKey: "AIzaSyAalziNd960DQofNIoW54K8z608vBZd_Ic",
@@ -107,22 +110,23 @@ export const Map = () => {
 
   const markerRef = useRef(null);
 
-  //* fetch stops
-  const { data, isLoading } = useFetch(
-    `https://bus.unab.edu.co/control/api/routes/${route}/`,
-    true
-  );
   // const { data, isLoading } = useFetch("http://localhost:8000/api/routes/1/"); // test localhost port 8000, cambiar el numero de ruta por la ruta seleccionada
 
+  //* fetch stops
   useEffect(() => {
-    if (data) {
-      stops = data.stops;
-      latitude = data.buses[route - 1].latitude;
-      longitude = data.buses[route - 1].longitude;
-      // console.log(data);
-      // console.log({ latitude, longitude });
-    }
-  }, [data]);
+    setLoading(true);
+
+    fetch(`https://bus.unab.edu.co/control/api/routes/${route}/`)
+      .then((res) => res.json())
+      .then((data) => {
+        stops = data.stops;
+        latitude = data.buses[route - 1]?.latitude;
+        longitude = data.buses[route - 1]?.longitude;
+        console.log({ data });
+        setLoading(false);
+        // console.log({ latitude, longitude });
+      });
+  }, [, data, route]);
 
   //* InfoWIndow selected stop
   const [selectedStop, setSelectedStop] = useState(null);
@@ -170,9 +174,9 @@ export const Map = () => {
         >
           <>
             {/* Load markerFs stops */}
-            {!isLoading &&
+            {!loading &&
               stops?.map((stop) => {
-                // console.log(stop);
+                console.log({ stop });
                 return (
                   <MarkerF
                     key={stop.name}
