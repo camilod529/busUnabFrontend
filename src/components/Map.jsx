@@ -3,8 +3,6 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { GoogleMap, MarkerF, useJsApiLoader, InfoWindow, Marker } from "@react-google-maps/api";
 import useWebSocket from "react-use-websocket";
 
-import { useFetch } from "../hooks";
-
 import { Spinner } from "./";
 
 import mapStyles from "../../static/JSON/mapStyles.js";
@@ -19,6 +17,8 @@ const WS_URL = "wss://bus.unab.edu.co/buses/location/";
 let latitude,
   longitude,
   stops = [];
+
+import "../css/map.css";
 
 function animateMarkerTo(marker, newPosition) {
   var options = {
@@ -94,6 +94,7 @@ function animateMarkerTo(marker, newPosition) {
 export const Map = () => {
   const route = useSelector((state) => state.route.route);
   const [loading, setLoading] = useState(false);
+  const [buses, setBuses] = useState([]);
 
   console.log(route);
   const { isLoaded } = useJsApiLoader({
@@ -123,6 +124,7 @@ export const Map = () => {
         longitude = data.buses[route - 1]?.longitude;
         console.log({ data });
         setLoading(false);
+        setBuses(data.buses);
         // console.log({ latitude, longitude });
       });
   }, [, route]);
@@ -209,6 +211,7 @@ export const Map = () => {
               </InfoWindow>
             )}
             {/* Bus markerF */}
+            {/* TODO: Cambiar como se renderizan los buses, revisar la cantidad y renderizar acorde, intentar cambiar el color del bus, que sea mas identificable */}
             {latitude && (
               <Marker
                 position={{ lat: latitude, lng: longitude }}
@@ -216,10 +219,17 @@ export const Map = () => {
                   url: "https://bus.unab.edu.co/static/src/bus-mapa.png",
                   anchor: new google.maps.Point(17, 46),
                   scaledSize: new google.maps.Size(47, 58),
+                  labelOrigin: new google.maps.Point(20, 65),
                 }}
                 animation={2}
                 zIndex={12}
                 ref={markerRef}
+                title={buses[0]?.plate}
+                label={{
+                  text: buses[0]?.plate,
+                  color: "#dc622b",
+                  className: "label-background",
+                }}
               ></Marker>
             )}
           </>
