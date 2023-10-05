@@ -93,6 +93,7 @@ export const Map = () => {
   if (lastJsonMessage) {
     const { message } = lastJsonMessage;
     if (message.bus === "SZK163" || message.bus === "WFC837") {
+      console.log({ message });
       busInfo1 = {
         latitude: parseFloat(message.latitude),
         longitude: parseFloat(message.longitude),
@@ -120,118 +121,115 @@ export const Map = () => {
     // if (busInfo.plate === "THY642") {
     markerRef2.current !== null
       ? animateMarkerTo(markerRef2?.current.marker, {
-          lat: busInfo2.latitude,
-          lng: busInfo2.longitude,
+          lat: busInfo2?.latitude,
+          lng: busInfo2?.longitude,
         })
       : null;
-    // }
-
-    return (
-      <>
-        {isLoaded ? (
-          <GoogleMap
-            mapContainerStyle={{
-              width: "100%",
-              height: "calc(100vh - 69px)",
-              zIndex: 9,
-            }}
-            zoom={16}
-            center={center}
-            mapTypeId="roadmap"
-            options={{
-              fullscreenControl: false,
-              disableDoubleClickZoom: true,
-              streetViewControl: false,
-              zoomControl: false,
-              scrollwheel: true,
-              styles: mapStyles,
-              disableDefaultUI: true,
-              gestureHandling: "greedy",
-            }}
-            onUnmount={onUnmount}
-          >
-            <>
-              {/* Load markerFs stops */}
-              {!loading &&
-                stops?.map((stop) => {
-                  // console.log({ stop });
-                  return (
-                    <MarkerF
-                      key={stop.name}
-                      position={{ lat: stop.latitude, lng: stop.longitude }}
-                      icon={{
-                        url: paradaMapa,
-                        anchor: new google.maps.Point(17, 46),
-                        scaledSize: new google.maps.Size(34, 37),
-                      }}
-                      zIndex={10}
-                      title={stop.name}
-                      animation={2}
-                      onClick={() => {
-                        setSelectedStop(stop);
-                      }}
-                    ></MarkerF>
-                  );
-                })}
-              {selectedStop && (
-                <InfoWindow
-                  onCloseClick={() => setSelectedStop(null)}
-                  position={{
-                    lat: selectedStop.latitude,
-                    lng: selectedStop.longitude,
-                  }}
-                  options={{ pixelOffset: new window.google.maps.Size(0, -40) }}
-                >
-                  <div>
-                    <span>Estación {selectedStop.name}</span>
-                  </div>
-                </InfoWindow>
-              )}
-              {/* Bus markerF */}
-              {/* TODO: Cambiar como se renderizan los buses, revisar la cantidad y renderizar acorde, intentar cambiar el color del bus, que sea mas identificable */}
-              {busInfo1 &&
-                buses?.map((bus, index) => {
-                  console.log(index, bus);
-                  return (
-                    <Marker
-                      key={bus.plate}
-                      position={
-                        bus.plate === "SZK163" || bus.plate === "WFC837"
-                          ? {
-                              lat: parseFloat(busInfo1.latitude),
-                              lng: parseFloat(busInfo1.longitude),
-                            }
-                          : {
-                              lat: parseFloat(busInfo2?.latitude),
-                              lng: parseFloat(busInfo2?.longitude),
-                            }
-                      }
-                      icon={{
-                        url: busMapa,
-                        anchor: new google.maps.Point(17, 46),
-                        scaledSize: new google.maps.Size(47, 58),
-                        labelOrigin: new google.maps.Point(20, 65),
-                      }}
-                      animation={2}
-                      zIndex={12}
-                      ref={
-                        bus.plate === "SZK163" || bus.plate === "WFC837" ? markerRef : markerRef2
-                      }
-                      title={bus.plate}
-                      label={{
-                        text: bus.plate,
-                        color: "#dc622b",
-                        // className: "label-background",
-                      }}
-                    ></Marker>
-                  );
-                })}
-            </>
-          </GoogleMap>
-        ) : (
-          <Spinner />
-        )}
-      </>
-    );
   }
+
+  return (
+    <>
+      {isLoaded ? (
+        <GoogleMap
+          mapContainerStyle={{
+            width: "100%",
+            height: "calc(100vh - 69px)",
+            zIndex: 9,
+          }}
+          zoom={16}
+          center={center}
+          mapTypeId="roadmap"
+          options={{
+            fullscreenControl: false,
+            disableDoubleClickZoom: true,
+            streetViewControl: false,
+            zoomControl: false,
+            scrollwheel: true,
+            styles: mapStyles,
+            disableDefaultUI: true,
+            gestureHandling: "greedy",
+          }}
+          onUnmount={onUnmount}
+        >
+          <>
+            {/* Load markerFs stops */}
+            {!loading &&
+              stops?.map((stop) => {
+                // console.log({ stop });
+                return (
+                  <MarkerF
+                    key={stop.name}
+                    position={{ lat: stop.latitude, lng: stop.longitude }}
+                    icon={{
+                      url: paradaMapa,
+                      anchor: new google.maps.Point(17, 46),
+                      scaledSize: new google.maps.Size(34, 37),
+                    }}
+                    zIndex={10}
+                    title={stop.name}
+                    animation={2}
+                    onClick={() => {
+                      setSelectedStop(stop);
+                    }}
+                  ></MarkerF>
+                );
+              })}
+            {selectedStop && (
+              <InfoWindow
+                onCloseClick={() => setSelectedStop(null)}
+                position={{
+                  lat: selectedStop.latitude,
+                  lng: selectedStop.longitude,
+                }}
+                options={{ pixelOffset: new window.google.maps.Size(0, -40) }}
+              >
+                <div>
+                  <span>Estación {selectedStop.name}</span>
+                </div>
+              </InfoWindow>
+            )}
+            {/* Bus markerF */}
+            {/* TODO: Cambiar como se renderizan los buses, revisar la cantidad y renderizar acorde, intentar cambiar el color del bus, que sea mas identificable */}
+            {busInfo1 &&
+              buses?.map((bus, index) => {
+                console.log(index, bus);
+                return (
+                  <Marker
+                    key={bus.plate}
+                    position={
+                      bus.plate === "SZK163" || bus.plate === "WFC837"
+                        ? {
+                            lat: parseFloat(busInfo1.latitude),
+                            lng: parseFloat(busInfo1.longitude),
+                          }
+                        : {
+                            lat: parseFloat(busInfo2?.latitude),
+                            lng: parseFloat(busInfo2?.longitude),
+                          }
+                    }
+                    icon={{
+                      url: busMapa,
+                      anchor: new google.maps.Point(17, 46),
+                      scaledSize: new google.maps.Size(47, 58),
+                      labelOrigin: new google.maps.Point(20, 65),
+                    }}
+                    animation={2}
+                    zIndex={12}
+                    ref={bus.plate === "SZK163" || bus.plate === "WFC837" ? markerRef : markerRef2}
+                    title={bus.plate}
+                    label={{
+                      text: bus.plate,
+                      color: "#dc622b",
+                      className: "label-background",
+                    }}
+                  ></Marker>
+                );
+              })}
+          </>
+        </GoogleMap>
+      ) : (
+        <Spinner />
+      )}
+    </>
+  );
 };
