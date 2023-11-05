@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useWebSocket from "react-use-websocket";
-import { GoogleMap, InfoWindow, Marker, MarkerF, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, InfoWindowF, Marker, MarkerF, useJsApiLoader } from "@react-google-maps/api";
 import { restoreDefaultBusLocation, updateBusLocation } from "../store/route/busSlice";
 import mapStyles from "../assets/JSON/mapStyles.ts";
 import animateMarkerTo from "../helpers/animateMarkerTo";
@@ -132,7 +132,7 @@ export const Map = () => {
         );
       })}
       {selectedStop && (
-        <InfoWindow
+        <InfoWindowF
           onCloseClick={() => setSelectedStop(null)}
           position={{
             lat: selectedStop.latitude,
@@ -143,7 +143,7 @@ export const Map = () => {
           <div>
             <span>Estación {selectedStop.name}</span>
           </div>
-        </InfoWindow>
+        </InfoWindowF>
       )}
     </GoogleMap>
   ) : (
