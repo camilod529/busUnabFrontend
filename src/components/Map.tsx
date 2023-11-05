@@ -17,7 +17,7 @@ const busMarkers: BusMarkers = {};
 
 export const Map = () => {
   const [stops, setStops] = useState<Stop[]>([]);
-  const [selectedStop, setSelectedStop] = useState<Stop>();
+  const [selectedStop, setSelectedStop] = useState<Stop | null>(null);
 
   const route = useSelector((state: RootState) => state.route.route);
   const buses: BusesState = useSelector((state: RootState) => state.buses);
@@ -133,7 +133,7 @@ export const Map = () => {
       })}
       {selectedStop && (
         <InfoWindow
-          onCloseClick={() => setSelectedStop(undefined)}
+          onCloseClick={() => setSelectedStop(null)}
           position={{
             lat: selectedStop.latitude,
             lng: selectedStop.longitude,
