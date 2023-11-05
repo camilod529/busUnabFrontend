@@ -9,7 +9,7 @@ const day = date.getDay();
 export const HomePage = () => {
   return (
     <>
-      {!(day === 0 || day === 6) ? (
+      {day === 0 || day === 6 ? (
         <NoServicePage />
       ) : (
         <>
