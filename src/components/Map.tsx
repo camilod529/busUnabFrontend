@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useWebSocket from "react-use-websocket";
 import { GoogleMap, InfoWindowF, Marker, MarkerF, useJsApiLoader } from "@react-google-maps/api";
-import { restoreDefaultBusLocation, updateBusLocation } from "../store/route/busSlice";
+import useWebSocket from "react-use-websocket";
 import mapStyles from "../assets/JSON/mapStyles.ts";
 import animateMarkerTo from "../helpers/animateMarkerTo";
+
 // Iconos marcadores mapa
 import paradaMapa from "../assets/svg/parada-mapa.svg";
 import busMapa from "../assets/svg/bus-mapa.svg";
+
+// Store
+import { restoreDefaultBusLocation, updateBusLocation } from "../store/route/busSlice";
+
+// Tipado
 import { RootState } from "../store/store.ts";
 import { BusesState, BusMarkers, LastJsonMessage, Stop } from "../types/types";
+
+import "../css/map.css";
 
 const center = { lat: 7.1148017392066905, lng: -73.10797265816113 };
 
@@ -44,6 +51,7 @@ export const Map = () => {
       };
       if (busMarkers[plate]) {
         animateMarkerTo(busMarkers[plate].marker, newLocation);
+        console.log(newLocation);
       }
     }
   }, [lastJsonMessage, route, dispatch]);
@@ -103,9 +111,9 @@ export const Map = () => {
                 lng: parseFloat(busData.longitude),
               }}
               animation={google.maps.Animation.DROP}
-              label={bus}
+              label={{ text: bus, color: "#dc622b", className: "label-background" }}
               ref={(marker) => {
-                busMarkers[bus] = { marker };
+                if (marker) busMarkers[bus] = marker;
               }}
             />
           );

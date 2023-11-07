@@ -11,9 +11,9 @@ export type LastJsonMessage = {
   // Otros campos si los hay
 };
 export interface CustomMarker extends google.maps.Marker {
-  AT_startPosition_lat: number;
-  AT_startPosition_lng: number;
-  AT_animationHandler?: number;
+  AT_startPosition_lat: number | undefined;
+  AT_startPosition_lng: number | undefined;
+  AT_animationHandler?: number | undefined;
 }
 
 export type BusMarkers = {
