@@ -51,7 +51,6 @@ export const Map = () => {
       };
       if (busMarkers[plate]) {
         animateMarkerTo(busMarkers[plate].marker, newLocation);
-        console.log(newLocation);
       }
     }
   }, [lastJsonMessage, route, dispatch]);
