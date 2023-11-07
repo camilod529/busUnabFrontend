@@ -114,6 +114,7 @@ export const Map = () => {
               ref={(marker) => {
                 if (marker) busMarkers[bus] = marker;
               }}
+              zIndex={100}
             />
           );
         })}
