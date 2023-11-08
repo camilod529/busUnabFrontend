@@ -69,12 +69,12 @@ export const CreditsPage = () => {
                         <td>fsuarez120@unab.edu.co</td>
                       </tr>
                       <tr>
-                        <td>Infraestructura UNAB</td>
+                        <td>TIC UNAB</td>
                         <td>Jonathan Espinel</td>
                         <td>jespinel404@unab.edu.co</td>
                       </tr>
                       <tr>
-                        <td>Infraestructura UNAB</td>
+                        <td>TIC UNAB</td>
                         <td>Ricardo becerra Gómez</td>
                         <td>ricardo.becerra@outlook.com</td>
                       </tr>
