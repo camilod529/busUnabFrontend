@@ -4,7 +4,6 @@ import { Message } from "../components/Message";
 
 const date = new Date();
 const day = date.getDay();
-// console.log(date);
 
 export const HomePage = () => {
   return (

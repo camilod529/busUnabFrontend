@@ -14,13 +14,11 @@ export const useFetch = (url: string, wait = false) => {
         isLoading: true,
       });
       if (wait) {
-        // console.log(wait);
         await new Promise((r) => setTimeout(r, 2000));
       }
 
       const res = await fetch(url);
       const data = await res.json();
-      // console.log(data);
       setState({
         data,
         isLoading: false,

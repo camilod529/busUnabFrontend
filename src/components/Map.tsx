@@ -62,7 +62,6 @@ export const Map = () => {
       navigator.geolocation.clearWatch(watchID);
     };
   }, []);
-  console.log(userLocation);
   useEffect(() => {
     // Realiza la animación de los marcadores de los autobuses
     if (lastJsonMessage && lastJsonMessage.message.route == route) {

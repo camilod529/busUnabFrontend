@@ -55,7 +55,6 @@ export const Message = () => {
     if (!isLoading && data) setMessages(data);
   }, [data, isLoading]);
 
-  // console.log(messages);
   const deleteNotification = (id: number) => {
     const newList = messages.filter((message) => message.id !== id);
 
@@ -63,13 +62,11 @@ export const Message = () => {
   };
 
   if (messages?.length > 0) {
-    // console.log(messages);
     return (
       <>
         <div className="container-fluid position-absolute top-0 start-0 h-5" style={{ zIndex: 10 }}>
           <div>
             {messages.map((message, index) => {
-              // console.log(message);
               return (
                 <div
                   key={message.id}

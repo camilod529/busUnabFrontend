@@ -8,4 +8,5 @@ export const store = configureStore({
     buses: busSlice.reducer,
   },
 });
+
 export type RootState = ReturnType<typeof store.getState>;
