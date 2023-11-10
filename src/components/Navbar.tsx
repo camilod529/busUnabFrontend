@@ -13,7 +13,6 @@ export const Navbar = () => {
     const dispatch = useDispatch();
     const route = useSelector((state: RootState) => state.route.route);
     const [data, setData] = useState<Routes[]>([]);
-    console.log(data);
 
     useEffect(() => {
         fetch("https://bus.unab.edu.co/control/api/routes/")
@@ -63,9 +62,13 @@ export const Navbar = () => {
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false"
                             >
-                                {route == 1
-                                    ? `Ruta 1A: ${data[parseInt(route.toString()) - 1].name} `
-                                    : `Ruta 2A-2B: ${data[parseInt(route.toString()) - 1].name}`}
+                                {route == 1 && data
+                                    ? `Ruta 1A: ${
+                                          data[parseInt(route.toString()) - 1]?.name || ""
+                                      } `
+                                    : `Ruta 2A-2B: ${
+                                          data[parseInt(route.toString()) - 1]?.name || ""
+                                      }`}
                             </a>
                             <ul className="dropdown-menu">
                                 {data.length > 0 &&

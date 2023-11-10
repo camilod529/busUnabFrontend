@@ -7,7 +7,9 @@ import animateMarkerTo from "../helpers/animateMarkerTo";
 
 // Iconos marcadores mapa
 import busMarkerR1 from "../assets/img/bus/busMarker-R1.png";
+import busMenuR1 from "../assets/img/bus/busMenu-R1.png";
 import busMarkerR2 from "../assets/img/bus/busMarker-R2.png";
+import busMenuR2 from "../assets/img/bus/busMenu-R2.png";
 import stopMarkerR1 from "../assets/img/stops/stopMarker-R1.png";
 import stopMarkerR2 from "../assets/img/stops/stopMarker-R2.png";
 
@@ -16,11 +18,12 @@ import { restoreDefaultBusLocation, updateBusLocation } from "../store/route/bus
 
 // Tipado
 import { RootState } from "../store/store.ts";
-import { BusesState, BusMarkers, LastJsonMessage, Stop } from "../types/types";
+import { BusesState, BusMarkers, BusRoute, LastJsonMessage, Stop } from "../types/types";
 
 import "../css/map.css";
 
-const center = { lat: 7.1148017392066905, lng: -73.10797265816113 };
+const centerR1 = { lat: 7.1148017392066905, lng: -73.10797265816113 };
+const centerR2 = { lat: 7.093142759549661, lng: -73.1093801136395 };
 
 const busMarkers: BusMarkers = {};
 
@@ -44,7 +47,7 @@ export const Map = () => {
     useEffect(() => {
         // Realiza la animación de los marcadores de los autobuses
         if (lastJsonMessage && lastJsonMessage.message.route == route) {
-            dispatch(updateBusLocation(lastJsonMessage.message));
+            dispatch(updateBusLocation({ ...lastJsonMessage.message, isSending: true }));
             const plate = lastJsonMessage.message.bus;
 
             const newLocation = {
@@ -62,6 +65,18 @@ export const Map = () => {
         fetch(`https://bus.unab.edu.co/control/api/routes/${route}/`)
             .then((res) => res.json())
             .then((data) => {
+                data.buses.forEach((bus: BusRoute) => {
+                    dispatch(
+                        updateBusLocation({
+                            bus: bus.plate,
+                            latitude: bus.latitude.toString(),
+                            longitude: bus.longitude.toString(),
+                            route: route,
+                            time: bus.active,
+                            isSending: false,
+                        })
+                    );
+                });
                 setStops(data.stops);
             });
 
@@ -81,8 +96,8 @@ export const Map = () => {
                 height: "calc(100vh - 69px)",
                 zIndex: 9,
             }}
-            zoom={16}
-            center={center}
+            zoom={route == 1 ? 16 : 14}
+            center={route == 1 ? centerR1 : centerR2}
             mapTypeId="roadmap"
             options={{
                 fullscreenControl: false,
@@ -103,17 +118,39 @@ export const Map = () => {
                         <Marker
                             key={bus}
                             icon={{
-                                url: busData.route == 1 ? busMarkerR1 : busMarkerR2,
+                                url:
+                                    busData.route == 1
+                                        ? busData.isSending
+                                            ? busMarkerR1
+                                            : busMenuR1
+                                        : busData.isSending
+                                        ? busMarkerR2
+                                        : busMenuR2,
                                 anchor: new google.maps.Point(17, 46),
-                                scaledSize: new google.maps.Size(47, 58),
-                                labelOrigin: new google.maps.Point(20, 65),
+                                scaledSize: busData.isSending
+                                    ? new google.maps.Size(47, 58)
+                                    : new google.maps.Size(48, 48),
+                                labelOrigin: busData.isSending
+                                    ? new google.maps.Point(20, 66)
+                                    : new google.maps.Point(24, 60),
                             }}
                             position={{
                                 lat: parseFloat(busData.latitude),
                                 lng: parseFloat(busData.longitude),
                             }}
                             animation={google.maps.Animation.DROP}
-                            label={{ text: bus, color: "#dc622b", className: "label-background" }}
+                            label={{
+                                text: bus,
+                                color:
+                                    route == 1
+                                        ? busData.isSending
+                                            ? "#46ac34"
+                                            : "grey"
+                                        : busData.isSending
+                                        ? "#de703f"
+                                        : "grey",
+                                className: "label-background",
+                            }}
                             ref={(marker) => {
                                 if (marker) busMarkers[bus] = marker;
                             }}
