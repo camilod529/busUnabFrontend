@@ -7,9 +7,8 @@ import animateMarkerTo from "../helpers/animateMarkerTo";
 
 // Iconos marcadores mapa
 import busMarkerR1 from "../assets/img/bus/busMarker-R1.png";
-import busMenuR1 from "../assets/img/bus/busMenu-R1.png";
+import busMarkerGris from "../assets/img/bus/BusMarkerGris.png";
 import busMarkerR2 from "../assets/img/bus/busMarker-R2.png";
-import busMenuR2 from "../assets/img/bus/busMenu-R2.png";
 import stopMarkerR1 from "../assets/img/stops/stopMarker-R1.png";
 import stopMarkerR2 from "../assets/img/stops/stopMarker-R2.png";
 
@@ -44,22 +43,6 @@ export const Map = () => {
         }
     );
 
-    useEffect(() => {
-        // Realiza la animación de los marcadores de los autobuses
-        if (lastJsonMessage && lastJsonMessage.message.route == route) {
-            dispatch(updateBusLocation({ ...lastJsonMessage.message, isSending: true }));
-            const plate = lastJsonMessage.message.bus;
-
-            const newLocation = {
-                lat: parseFloat(lastJsonMessage.message.latitude),
-                lng: parseFloat(lastJsonMessage.message.longitude),
-            };
-            if (busMarkers[plate]) {
-                animateMarkerTo(busMarkers[plate].marker, newLocation);
-            }
-        }
-    }, [lastJsonMessage, route, dispatch]);
-
     // * stops by route
     useEffect(() => {
         fetch(`https://bus.unab.edu.co/control/api/routes/${route}/`)
@@ -82,6 +65,22 @@ export const Map = () => {
 
         dispatch(restoreDefaultBusLocation());
     }, [route, dispatch]);
+
+    useEffect(() => {
+        // Realiza la animación de los marcadores de los autobuses
+        if (lastJsonMessage && lastJsonMessage.message.route == route) {
+            dispatch(updateBusLocation({ ...lastJsonMessage.message, isSending: true }));
+            const plate = lastJsonMessage.message.bus;
+
+            const newLocation = {
+                lat: parseFloat(lastJsonMessage.message.latitude),
+                lng: parseFloat(lastJsonMessage.message.longitude),
+            };
+            if (busMarkers[plate]) {
+                animateMarkerTo(busMarkers[plate].marker, newLocation);
+            }
+        }
+    }, [lastJsonMessage, route, dispatch]);
 
     // Cargar de mapa de Google
     const { isLoaded } = useJsApiLoader({
@@ -122,10 +121,10 @@ export const Map = () => {
                                     busData.route == 1
                                         ? busData.isSending
                                             ? busMarkerR1
-                                            : busMenuR1
+                                            : busMarkerGris
                                         : busData.isSending
                                         ? busMarkerR2
-                                        : busMenuR2,
+                                        : busMarkerGris,
                                 anchor: new google.maps.Point(17, 46),
                                 scaledSize: busData.isSending
                                     ? new google.maps.Size(47, 58)
