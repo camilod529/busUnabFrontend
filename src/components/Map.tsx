@@ -6,8 +6,10 @@ import mapStyles from "../assets/JSON/mapStyles.ts";
 import animateMarkerTo from "../helpers/animateMarkerTo";
 
 // Iconos marcadores mapa
-import paradaMapa from "../assets/svg/parada-mapa.svg";
-import busMapa from "../assets/svg/bus-mapa.svg";
+import busMarkerR1 from "../assets/img/bus/busMarker-R1.png";
+import busMarkerR2 from "../assets/img/bus/busMarker-R2.png";
+import stopMarkerR1 from "../assets/img/stops/stopMarker-R1.png";
+import stopMarkerR2 from "../assets/img/stops/stopMarker-R2.png";
 
 // Store
 import { restoreDefaultBusLocation, updateBusLocation } from "../store/route/busSlice";
@@ -23,137 +25,138 @@ const center = { lat: 7.1148017392066905, lng: -73.10797265816113 };
 const busMarkers: BusMarkers = {};
 
 export const Map = () => {
-  const [stops, setStops] = useState<Stop[]>([]);
-  const [selectedStop, setSelectedStop] = useState<Stop | null>(null);
+    const [stops, setStops] = useState<Stop[]>([]);
+    const [selectedStop, setSelectedStop] = useState<Stop | null>(null);
 
-  const route = useSelector((state: RootState) => state.route.route);
-  const buses: BusesState = useSelector((state: RootState) => state.buses);
-  const dispatch = useDispatch();
-  const { lastJsonMessage } = useWebSocket<LastJsonMessage>(
-    "wss://bus.unab.edu.co/buses/location/",
-    {
-      onOpen: () => {
-        console.log("WebSocket connection established.");
-      },
-      shouldReconnect: () => false,
-    }
-  );
+    const route = useSelector((state: RootState) => state.route.route);
+    const buses: BusesState = useSelector((state: RootState) => state.buses);
+    const dispatch = useDispatch();
+    const { lastJsonMessage } = useWebSocket<LastJsonMessage>(
+        "wss://bus.unab.edu.co/buses/location/",
+        {
+            onOpen: () => {
+                console.log("WebSocket connection established.");
+            },
+            shouldReconnect: () => false,
+        }
+    );
 
-  useEffect(() => {
-    // Realiza la animación de los marcadores de los autobuses
-    if (lastJsonMessage && lastJsonMessage.message.route == route) {
-      dispatch(updateBusLocation(lastJsonMessage.message));
-      const plate = lastJsonMessage.message.bus;
+    useEffect(() => {
+        // Realiza la animación de los marcadores de los autobuses
+        if (lastJsonMessage && lastJsonMessage.message.route == route) {
+            dispatch(updateBusLocation(lastJsonMessage.message));
+            const plate = lastJsonMessage.message.bus;
 
-      const newLocation = {
-        lat: parseFloat(lastJsonMessage.message.latitude),
-        lng: parseFloat(lastJsonMessage.message.longitude),
-      };
-      if (busMarkers[plate]) {
-        animateMarkerTo(busMarkers[plate].marker, newLocation);
-      }
-    }
-  }, [lastJsonMessage, route, dispatch]);
+            const newLocation = {
+                lat: parseFloat(lastJsonMessage.message.latitude),
+                lng: parseFloat(lastJsonMessage.message.longitude),
+            };
+            if (busMarkers[plate]) {
+                animateMarkerTo(busMarkers[plate].marker, newLocation);
+            }
+        }
+    }, [lastJsonMessage, route, dispatch]);
 
-  // * stops by route
-  useEffect(() => {
-    fetch(`https://bus.unab.edu.co/control/api/routes/${route}/`)
-      .then((res) => res.json())
-      .then((data) => {
-        setStops(data.stops);
-      });
-    dispatch(restoreDefaultBusLocation());
-  }, [route, dispatch]);
+    // * stops by route
+    useEffect(() => {
+        fetch(`https://bus.unab.edu.co/control/api/routes/${route}/`)
+            .then((res) => res.json())
+            .then((data) => {
+                setStops(data.stops);
+            });
 
-  // Cargar de mapa de Google
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: "AIzaSyAalziNd960DQofNIoW54K8z608vBZd_Ic",
-  });
+        dispatch(restoreDefaultBusLocation());
+    }, [route, dispatch]);
 
-  return isLoaded ? (
-    <GoogleMap
-      mapContainerStyle={{
-        width: "100%",
-        height: "calc(100vh - 69px)",
-        zIndex: 9,
-      }}
-      zoom={16}
-      center={center}
-      mapTypeId="roadmap"
-      options={{
-        fullscreenControl: false,
-        disableDoubleClickZoom: true,
-        streetViewControl: false,
-        zoomControl: false,
-        scrollwheel: true,
-        styles: mapStyles,
-        disableDefaultUI: true,
-        gestureHandling: "greedy",
-      }}
-    >
-      {/* Bus marker */}
-      {Object.keys(buses).length > 0 &&
-        Object.keys(buses).map((bus: string) => {
-          const busData = buses[bus]; // Accede a los datos del autobús utilizando la clave
-          return (
-            <Marker
-              key={bus}
-              icon={{
-                url: busMapa,
-                anchor: new google.maps.Point(17, 46),
-                scaledSize: new google.maps.Size(47, 58),
-                labelOrigin: new google.maps.Point(20, 65),
-              }}
-              position={{
-                lat: parseFloat(busData.latitude),
-                lng: parseFloat(busData.longitude),
-              }}
-              animation={google.maps.Animation.DROP}
-              label={{ text: bus, color: "#dc622b", className: "label-background" }}
-              ref={(marker) => {
-                if (marker) busMarkers[bus] = marker;
-              }}
-              zIndex={100}
-            />
-          );
-        })}
-      {/* StopMarker */}
-      {stops?.map((stop) => {
-        return (
-          <MarkerF
-            key={stop.name}
-            position={{ lat: stop.latitude, lng: stop.longitude }}
-            icon={{
-              url: paradaMapa,
-              anchor: new google.maps.Point(17, 46),
-              scaledSize: new google.maps.Size(34, 37),
+    // Cargar de mapa de Google
+    const { isLoaded } = useJsApiLoader({
+        id: "google-map-script",
+        googleMapsApiKey: "AIzaSyAalziNd960DQofNIoW54K8z608vBZd_Ic",
+    });
+
+    return isLoaded ? (
+        <GoogleMap
+            mapContainerStyle={{
+                width: "100%",
+                height: "calc(100vh - 69px)",
+                zIndex: 9,
             }}
-            zIndex={10}
-            title={stop.name}
-            animation={google.maps.Animation.DROP}
-            onClick={() => {
-              setSelectedStop(stop);
+            zoom={16}
+            center={center}
+            mapTypeId="roadmap"
+            options={{
+                fullscreenControl: false,
+                disableDoubleClickZoom: true,
+                streetViewControl: false,
+                zoomControl: false,
+                scrollwheel: true,
+                styles: mapStyles,
+                disableDefaultUI: true,
+                gestureHandling: "greedy",
             }}
-          ></MarkerF>
-        );
-      })}
-      {selectedStop && (
-        <InfoWindowF
-          onCloseClick={() => setSelectedStop(null)}
-          position={{
-            lat: selectedStop.latitude,
-            lng: selectedStop.longitude,
-          }}
-          options={{ pixelOffset: new window.google.maps.Size(0, -40) }}
         >
-          <div>
-            <span>Estación {selectedStop.name}</span>
-          </div>
-        </InfoWindowF>
-      )}
-    </GoogleMap>
-  ) : (
-    <></>
-  );
+            {/* Bus marker */}
+            {Object.keys(buses).length > 0 &&
+                Object.keys(buses).map((bus: string) => {
+                    const busData = buses[bus]; // Accede a los datos del autobús utilizando la clave
+                    return (
+                        <Marker
+                            key={bus}
+                            icon={{
+                                url: busData.route == 1 ? busMarkerR1 : busMarkerR2,
+                                anchor: new google.maps.Point(17, 46),
+                                scaledSize: new google.maps.Size(47, 58),
+                                labelOrigin: new google.maps.Point(20, 65),
+                            }}
+                            position={{
+                                lat: parseFloat(busData.latitude),
+                                lng: parseFloat(busData.longitude),
+                            }}
+                            animation={google.maps.Animation.DROP}
+                            label={{ text: bus, color: "#dc622b", className: "label-background" }}
+                            ref={(marker) => {
+                                if (marker) busMarkers[bus] = marker;
+                            }}
+                            zIndex={100}
+                        />
+                    );
+                })}
+            {/* StopMarker */}
+            {stops?.map((stop) => {
+                return (
+                    <MarkerF
+                        key={stop.name}
+                        position={{ lat: stop.latitude, lng: stop.longitude }}
+                        icon={{
+                            url: route == 1 ? stopMarkerR1 : stopMarkerR2,
+                            anchor: new google.maps.Point(17, 46),
+                            scaledSize: new google.maps.Size(34, 37),
+                        }}
+                        zIndex={10}
+                        title={stop.name}
+                        animation={google.maps.Animation.DROP}
+                        onClick={() => {
+                            setSelectedStop(stop);
+                        }}
+                    ></MarkerF>
+                );
+            })}
+            {selectedStop && (
+                <InfoWindowF
+                    onCloseClick={() => setSelectedStop(null)}
+                    position={{
+                        lat: selectedStop.latitude,
+                        lng: selectedStop.longitude,
+                    }}
+                    options={{ pixelOffset: new window.google.maps.Size(0, -40) }}
+                >
+                    <div>
+                        <span>Estación {selectedStop.name}</span>
+                    </div>
+                </InfoWindowF>
+            )}
+        </GoogleMap>
+    ) : (
+        <></>
+    );
 };
