@@ -153,7 +153,7 @@ export const Map = () => {
                             ref={(marker) => {
                                 if (marker) busMarkers[bus] = marker;
                             }}
-                            zIndex={100}
+                            zIndex={busData.isSending ? 100 : 90}
                         />
                     );
                 })}
